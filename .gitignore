@@ -1,0 +1,11 @@
+#**Password, Important to Exclude**
+MyLoginData
+
+#Notes
+Notes
+
+#any working .html files
+*.html
+
+#any working .pyc files
+*.pyc
