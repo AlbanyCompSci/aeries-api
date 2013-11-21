@@ -15,16 +15,16 @@ def getGradebooks(soup):
 def getGradebook(soup):
 	cells = soup.find_all('td')
 	gradebook =	{
-			'name': cells[1].get_text(),
-			'period': cells[2].get_text(),
-			'teacher': cells[3].get_text(),
-			'percent': cells[4].find('span').get('title'),
-			'mark': cells[6].get_text(),
-			'trend': getTrend(cells[7]),
-			'predicted percent': getPredicted(cells[7]),
-			'recent average': getRecentAverage(cells[7]),
-			'missing assignments': cells[8].get_text(),
-			'updated': getDate(cells[15])
+				'name': cells[1].get_text(),
+				'period': cells[2].get_text(),
+				'teacher': cells[3].get_text(),
+				'percent': cells[4].find('span').get('title'),
+				'mark': cells[6].get_text(),
+				'trend': getTrend(cells[7]),
+				'predicted percent': getPredicted(cells[7]),
+				'recent average': getRecentAverage(cells[7]),
+				'missing assignments': cells[8].get_text(),
+				'updated': getDate(cells[15])
 			}
 	return gradebook
 
@@ -59,4 +59,5 @@ def getTrendPercents(cell):
 def getDate(cell):
 	written_date = cell.find('span').get('title')
 	date_object = dateutil.parser.parse(written_date)
-	return date_object.strftime('%Y-%m-%d')
+	#return date_object.strftime('%Y-%m-%d')
+        return date_object.isoformat()

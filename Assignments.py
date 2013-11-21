@@ -2,9 +2,7 @@
 
 #Need more examples before completion
 def getAssignments(soup):
-	day_id =	{
-			'id': re.compile('ctl00_MainContent_ctl(..)_lblDate')
-			}
+	day_id = {'id': re.compile('ctl00_MainContent_ctl(..)_lblDate')}
 	days = soup.find_all('span', day_id)
 	assignments = []
 	for day in days:
@@ -20,9 +18,9 @@ def getDay(day):
 
 def getAssignment(cell, date):
 	assignment =	{
-			'date': date,
-			'period': getPeriod(cell),
-			#'action': eg Due
-			'description': getDescription(cell),
+				'date': date,
+				'period': getPeriod(cell),
+				#'action': eg Due
+				'description': getDescription(cell),
 			}
 	return assignment

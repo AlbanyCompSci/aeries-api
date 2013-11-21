@@ -9,3 +9,9 @@ Notes
 
 #any working .pyc files
 *.pyc
+
+#logs from PhantomJS
+*.log
+
+#backups
+*.bak

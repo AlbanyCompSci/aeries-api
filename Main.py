@@ -40,7 +40,9 @@ def getLoginData(file_name):
 				password = lines[1].rstrip('\n')
 		return {'email': email, 'password': password}
 
+def getJSON(email, password):
+    user_data = getUserData(email, password)
+    return toJSON(user_data)
+
 login_data = getLoginData('MyLoginData')
-user_data = getUserData(login_data['email'], login_data['password'])
-json_user_data = toJSON(user_data)
-print json_user_data
+print getJSON(login_data['email'], login_data['password'])
