@@ -48,9 +48,12 @@ def getDay(tag, date):
         i = 0
 	for assignment_row in assignment_rows:
                 assignment = getAssignment(assignment_row, date)
+                #Deals with non-expanding assignments or ones that do not follow Pd \d format
                 if assignment['short description'] == None:
                         long_description = assignment['long description']
-                        assignment = getAssignment(short_assignment_rows[i])
+                        print "Long Description: " + str(long_description)
+                        short_assignment_row = assignment_row.previous_sibling
+                        assignment = getAssignment(short_assignment_row, date)
                         assignment['long description'] = long_description
 		assignments.append(assignment)
                 i += 1
@@ -72,7 +75,8 @@ def getAssignmentPart(part, tag):
                             'period': '.*Pd (\d*).*',
                             'action': '.*?(\S*):.*',
                             'short description': '.*?: (.*)',
-                            'long description': '(.*)\|(?:Pd){0,1}.*'
+                            #Bug: currently does not match descriptions not fitting period format
+                            'long description': '(.*)\|(?:Pd).*'
                         }
         match = re.match(part_patterns[part], text)
         try:
