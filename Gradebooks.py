@@ -1,11 +1,16 @@
 #!/usr/bin/python2
 
 import re, dateutil.parser
+from bs4 import BeautifulSoup
 
-def getGradebooks(soup):
-	gradebook_row_id =	{
+ADDRESS = 'https://abi.ausdk12.org/aeriesportal/default.aspx'
+
+def getGradebooks(session):
+        page = session.getPage(ADDRESS)
+        soup = BeautifulSoup(page)
+	gradebook_row_id =  {
 				'id': re.compile('ctl(..)_MainContent_ctl(..)_DataDetails_ctl(..)_trGBKItem')
-				}
+			    }
 	gradebook_rows = soup.find_all('tr', gradebook_row_id)
 	gradebooks = []
 	for row in gradebook_rows:
