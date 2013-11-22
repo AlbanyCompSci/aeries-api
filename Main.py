@@ -1,48 +1,52 @@
 #!/usr/bin/python2
 
 #system
-import re
+#JSON for language agnostic output
 try:
 	import simplejson as json
 except ImportError:
 	import json
-from bs4 import BeautifulSoup
 #local
-import AeriesSession, Gradebooks #, Assignments
-
-DEFAULT_PAGE = 'http://abi.ausdk12.org/aeriesportal/default.aspx'
+#AeriesSession provides an object for interacting with the Aeries
+#   website (also used internally by Gradebooks and Assignments)
+#Gradebooks gets gradebook information from the home page
+#Assignments gets assignment information from the home page
+import AeriesSession, Gradebooks, Assignments
 
 def getUserData(email, password):
+        #Initializes a session object, which logs in to Aeries
 	session = AeriesSession.Session(email, password)
-	default_page = session.getPage(DEFAULT_PAGE)
-	#print default_page
-	default_soup = BeautifulSoup(default_page)
-	gradebooks = Gradebooks.getGradebooks(default_soup)
-	#Insufficient example data to fully determine the structure of assignments
-	#assignments = Assignments.getAssignments(default_soup)
-	#return {'gradebooks': gradebooks, 'assignments': assignments}
-	return gradebooks
+        #Passes the session object to the Gradebooks class to
+        #   read general gradebook information (in python format)
+        #   from the home page
+	gradebooks = Gradebooks.getGradebooks(session)
+        #Passes the session object to the Assignments class to read
+        #   the current month's (starting on the 1st ending on the
+        #   last day) assignments (in python format) from the home page
+	assignments = Assignments.getAssignments(session)
+	return {'gradebooks': gradebooks, 'assignments': assignments}
 
 def toJSON(python_hierachy):
-	return json.dumps(python_hierachy, sort_keys=True,
-			indent=4, separators=(',', ': '), default=dthandler)
-
-def dthandler(obj):
-	if hasattr(obj, 'isoformat'):
-		return obj.isoformat()
-	else:
-		raise TypeError, 'Object of type %s with value of %s is not JSON serializable' % (type(obj), repr(obj))
+	return json.dumps(python_hierachy, sort_keys=True, indent=4, separators=(',', ': '))
 
 def getLoginData(file_name):
 		with open(file_name) as f:
-				lines = f.readlines()
-				email = lines[0].rstrip('\n')
-				password = lines[1].rstrip('\n')
+		        lines = f.readlines()
+                        #Reads first line of file as email used for login
+		        email = lines[0].rstrip('\n')
+                        #Reads second line of file as password used for login
+		        password = lines[1].rstrip('\n')
 		return {'email': email, 'password': password}
 
 def getJSON(email, password):
+    #Gets users basic gradebooks and assignments from the home page and
+    #   returns them in python format
     user_data = getUserData(email, password)
+    #Retuns user data converted into JSON
     return toJSON(user_data)
 
+#Get user login data from file MyLoginData in the working directory
 login_data = getLoginData('MyLoginData')
+#Currently gets all basic gradebook and assignment data from the home
+#   page and prints it as JSON
 print getJSON(login_data['email'], login_data['password'])
