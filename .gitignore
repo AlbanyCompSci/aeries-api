@@ -4,8 +4,11 @@ MyLoginData
 #Notes
 Notes
 
-#any working .html files
+#any downloaded web pages
+*.htm
+*.asp
 *.html
+*.aspx
 
 #any working .pyc files
 *.pyc
