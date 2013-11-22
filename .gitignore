@@ -18,3 +18,6 @@ Notes
 
 #backups
 *.bak
+
+#swap file
+*.swp
