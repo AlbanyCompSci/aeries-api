@@ -38,15 +38,11 @@ def getLoginData(file_name):
 		        password = lines[1].rstrip('\n')
 		return {'email': email, 'password': password}
 
-def getJSON(email, password):
-    #Gets users basic gradebooks and assignments from the home page and
-    #   returns them in python format
-    user_data = getUserData(email, password)
-    #Retuns user data converted into JSON
-    return toJSON(user_data)
-
 #Get user login data from file MyLoginData in the working directory
 login_data = getLoginData('MyLoginData')
-#Currently gets all basic gradebook and assignment data from the home
-#   page and prints it as JSON
-print getJSON(login_data['email'], login_data['password'])
+#Gets users basic gradebooks and assignments from the home page and
+#   returns them in python format
+user_data = getUserData(login_data['email'], login_data['password'])
+#Returns user data converted into JSON
+json = toJSON(user_data['assignments'])
+print json
