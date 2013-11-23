@@ -27,7 +27,7 @@ def getAssignments(session):
                 date = month.replace(day=int(day_of_month)).isoformat()
                 day = getDay(day_tag, date)
                 #intentional avoidance of .append(); += combines lists at the same level
-		assignments += getDay(day_tag, date)
+		assignments += day
 	return assignments
 
 def getMonthPage(session):
@@ -48,10 +48,9 @@ def getDay(tag, date):
         i = 0
 	for assignment_row in assignment_rows:
                 assignment = getAssignment(assignment_row, date)
-                #Deals with non-expanding assignments or ones that do not follow Pd \d format
+                #Deals with non-expanding assignments or ones that do not follow Pd # ... format
                 if assignment['short description'] == None:
                         long_description = assignment['long description']
-                        print "Long Description: " + str(long_description)
                         short_assignment_row = assignment_row.previous_sibling
                         assignment = getAssignment(short_assignment_row, date)
                         assignment['long description'] = long_description
@@ -75,11 +74,15 @@ def getAssignmentPart(part, tag):
                             'period': '.*Pd (\d*).*',
                             'action': '.*?(\S*):.*',
                             'short description': '.*?: (.*)',
-                            #Bug: currently does not match descriptions not fitting period format
-                            'long description': '(.*)\|(?:Pd).*'
+                            'long description': '(?:Pd.*)|(?:(.*)[|])|(.*)'
                         }
         match = re.match(part_patterns[part], text)
         try:
-            return match.group(1)
-        except:
+            part = match.group(match.lastindex)
+            if part == '':
+                return None
+            return part
+        except AttributeError:
+            return None
+        except IndexError:
             return None
