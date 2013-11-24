@@ -6,12 +6,13 @@ try:
 	import simplejson as json
 except ImportError:
 	import json
+
 #local
 #AeriesSession provides an object for interacting with the Aeries
 #   website (also used internally by Gradebooks and Assignments)
 #Gradebooks gets gradebook information from the home page
 #Assignments gets assignment information from the home page
-import AeriesSession, Gradebooks, Assignments
+import AeriesSession, Gradebooks, Assignments, GradebookDetails
 
 def getUserData(email, password):
         #Initializes a session object, which logs in to Aeries
@@ -44,5 +45,5 @@ login_data = getLoginData('MyLoginData')
 #   returns them in python format
 user_data = getUserData(login_data['email'], login_data['password'])
 #Returns user data converted into JSON
-json = toJSON(user_data['assignments'])
+json = toJSON(user_data)
 print json
