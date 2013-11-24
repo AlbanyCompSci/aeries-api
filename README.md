@@ -7,7 +7,7 @@ password
 can also be generated with ./setLoginData.sh
 
 
-# Todo
+## Todo
 - **clean up code**
 - check for edge case bugs
 - decide on how to deal with blank fiels (None/null type, '' string, 'blank' string etc.)
