@@ -10,11 +10,9 @@ GRADEBOOK_PAGE = 'GradebookDetails.aspx'
 def getGradebook(gradebook_name, session):
     page = getGradebookPage(gradebook_name, session)
     soup = BeautifulSoup(page)
-    #print "Soup: " + soup.prettify()
     entries = getEntries(soup)
-    #weighting = getWeighting(soup)
-    #return {'entries': entries, 'weighting': weighting}
-    return entries
+    weighting = getWeighting(soup)
+    return {'entries': entries, 'weighting': weighting}
 
 def getGradebookPage(gradebook_name, session):
     default_text = session.getPage(BASE_URL + DEFAULT_PAGE)
@@ -28,14 +26,11 @@ def getGradebookPage(gradebook_name, session):
 def getEntries(soup):
     table_id = {'id': re.compile('ctl00_MainContent_subGBS_tblEverything')}
     table = soup.find('table', table_id).find_all('table')[2]
-    #table = getTable(soup, 'td', 'ctl(\d\d)_MainContent_subGBS_DataDetails_ctl(\d\d)_imgExpand')
-    #print "Table: " + str(table)
     rows = table.find_all('tr')
     entries = []
     for row in rows:
         try:
             first_td_class = row.find('td').get('class')[0]
-            #print "First TD Class: " + first_td_class
             if first_td_class != 'DataLE':
                 continue
         except (AttributeError, TypeError):
@@ -79,15 +74,11 @@ def getEntry(row):
     return entry
 
 def clean(string):
-    #newline or whitespace
-    #nl_ws = r'(?:\n|\s)'
-    #match = re.match(nl_ws + '*(.*)' + nl_ws + '*', string)
     cleaned = string.strip(' \t\n\r')
     cleaned = cleaned.encode('ascii', 'ignore')
     return cleaned
 
 def getExpand(key, super_td):
-    #print "Expand " + str(super_td.get_text().encode('ascii', 'ignore'))
     sub_tr_ids =    {
                         'date assigned':    re.compile('.*trDA'),
                         'due time':         re.compile('.*trDUT'),
@@ -103,7 +94,6 @@ def getExpand(key, super_td):
 
 def getScore(td):
     text = clean(td.get_text())
-    #print "Score: " + text
     split = text.split('/')
     try:
         numerator = clean(split[0])
@@ -136,6 +126,12 @@ def getWeighting(soup):
     rows = table.find_all('tr')
     categories = []
     for row in rows:
+        try:
+            row_class = row.get('class')[0]
+        except:
+            row_class = None
+        if row_class == 'SubHeaderRow':
+            continue
         category = getCategory(row)
         categories.append(category)
     return categories
@@ -166,7 +162,7 @@ def getCategory(row):
                 }
     for part in part_ids:
         try:
-            part_value = row.find('td', part_ids[part]).get_text()
+            part_value = row.find('td', {'id': part_ids[part]}).get_text()
         except:
             category[part] = None
             continue
