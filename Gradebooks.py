@@ -13,9 +13,7 @@ ADDRESS = 'https://abi.ausdk12.org/aeriesportal/default.aspx'
 def getGradebooks(session):
         page = session.getPage(ADDRESS)
         soup = BeautifulSoup(page)
-	gradebook_row_id =  {
-				'id': re.compile('ctl(\d\d)_MainContent_ctl(\d\d)_DataDetails_ctl(\d\d)_trGBKItem')
-			    }
+	gradebook_row_id =  {'id': re.compile('ctl(\d\d)_MainContent_ctl(\d\d)_DataDetails_ctl(\d\d)_trGBKItem')}
 	gradebook_rows = soup.find_all('tr', gradebook_row_id)
 	gradebooks = []
 	for row in gradebook_rows:
@@ -27,25 +25,25 @@ def getGradebook(soup):
 	cells = soup.find_all('td')
 	gradebook =	{
                                 #Gradebook/class name
-				'name': cells[1].get_text(),
+				'name':                 cells[1].get_text(),
                                 #Period number (as string)
-				'period': cells[2].get_text(),
+				'period':               cells[2].get_text(),
                                 #Teacher
-				'teacher': cells[3].get_text(),
+				'teacher':              cells[3].get_text(),
                                 #Total grade percent (as string)
-				'percent': cells[4].find('span').get('title'),
+				'percent':              cells[4].find('span').get('title'),
                                 #Letter grade
-				'mark': cells[6].get_text(),
+				'mark':                 cells[6].get_text(),
                                 #Grade trend (up, down, stable, None)
-				'trend': getTrend(cells[7]),
+				'trend':                getTrend(cells[7]),
                                 #Predicted grade percent (as string)
-				'predicted percent': getPredicted(cells[7]),
+				'predicted percent':    getPredicted(cells[7]),
                                 #Average of four most recent scores
-				'recent average': getRecentAverage(cells[7]),
+				'recent average':       getRecentAverage(cells[7]),
                                 #Number of missing assignments (as string)
-				'missing assignments': cells[8].get_text(),
+				'missing assignments':  cells[8].get_text(),
                                 #Last date the gradebook was updated (as string in ISO format including a blank time)
-				'updated': getDate(cells[15])
+				'updated':              getDate(cells[15])
 			}
 	return gradebook
 

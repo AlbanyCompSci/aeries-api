@@ -60,21 +60,21 @@ def getDay(tag, date):
 
 def getAssignment(tag, date):
 	assignment =	{
-				'date': date,
-                                'period': getAssignmentPart('period', tag),
-                                'action': getAssignmentPart('action', tag),
-                                'short description': getAssignmentPart('short description', tag),
-                                'long description': getAssignmentPart('long description', tag)
+				'date':                 date,
+                                'period':               getAssignmentPart('period', tag),
+                                'action':               getAssignmentPart('action', tag),
+                                'short description':    getAssignmentPart('short description', tag),
+                                'long description':     getAssignmentPart('long description', tag)
 			}
 	return assignment
 
 def getAssignmentPart(part, tag):
         text = tag.get_text('|')
         part_patterns = {
-                            'period': '.*Pd (\d*).*',
-                            'action': '.*?(\S*):.*',
-                            'short description': '.*?: (.*)',
-                            'long description': '(?:Pd.*)|(?:(.*)[|])|(.*)'
+                            'period':               '.*Pd (\d*).*',
+                            'action':               '.*?(\S*):.*',
+                            'short description':    '.*?: (.*)',
+                            'long description':     '(?:Pd.*)|(?:(.*)[|])|(.*)'
                         }
         match = re.match(part_patterns[part], text)
         try:

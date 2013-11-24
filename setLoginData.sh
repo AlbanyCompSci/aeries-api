@@ -1,6 +1,7 @@
 #!/bin/sh
-echo "Enter email:"
+echo -n "Enter email: "
 read email
-echo "Enter password:"
-read password
+echo -n "Enter password: "
+read -s password
+echo
 echo -e "$email\n$password" > "MyLoginData"
