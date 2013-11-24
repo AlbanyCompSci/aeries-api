@@ -9,9 +9,9 @@ from selenium import webdriver
 #Ability to select values in HTML <select> tags
 from selenium.webdriver.support import select
 
-#Base address of the AUSDK12 Aeries system
-BASEADDRESS = 	'https://abi.ausdk12.org/aeriesportal/'
-#Name of the login page (relative to the base address)
+#Base URL of the AUSDK12 Aeries system
+BASE_URL= 	'https://abi.ausdk12.org/aeriesportal/'
+#Name of the login page (relative to the base URL)
 LOGIN_PAGE = 	'LoginParent.aspx'
 #<form> id, not currently used
 #FORM_ID =	'form1'
@@ -33,7 +33,7 @@ class Session:
         #   (having been redirected from the login page on submit)
 	def __init__(self, email, password):
                 self.driver = webdriver.PhantomJS()
-                self.driver.get(BASEADDRESS + LOGIN_PAGE)
+                self.driver.get(BASE_URL + LOGIN_PAGE)
                 email_elem = self.driver.find_element_by_id(EMAIL_ID)
                 email_elem.send_keys(email)
                 password_elem = self.driver.find_element_by_id(PASSWORD_ID)
@@ -43,8 +43,8 @@ class Session:
 
         #Execute Javascript on the current page
         def executeJS(self, js):
-                self.driver.execute_script(js)
-                return self.driver.page_source
+            self.driver.execute_script(js)
+            return self.driver.page_source
 
         #Select a value given the <select> tag's id (elem_id) and the
         #   option value (option)
@@ -55,7 +55,10 @@ class Session:
 
         #If the page is not already loaded, go to the page; either way,
         #   return the page
-	def getPage(self, address):
-            if self.driver.current_url != address:
-	        self.driver.get(address)
+	def getPage(self, url):
+            if self.driver.current_url != url:
+	        self.driver.get(url)
             return self.driver.page_source
+
+        def getCurrentURL(self):
+            return self.driver.current_url
