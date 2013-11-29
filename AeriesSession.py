@@ -10,54 +10,54 @@ from selenium import webdriver
 from selenium.webdriver.support import select
 
 #Base URL of the AUSDK12 Aeries system
-BASE_URL= 	'https://abi.ausdk12.org/aeriesportal/'
+BASE_URL=       'https://abi.ausdk12.org/aeriesportal/'
 #Name of the login page (relative to the base URL)
-LOGIN_PAGE = 	'LoginParent.aspx'
+LOGIN_PAGE =    'LoginParent.aspx'
 #<form> id, not currently used
-#FORM_ID =	'form1'
+#FORM_ID =      'form1'
 #id for email <input>
-EMAIL_ID =	'txtEmailAddress'
+EMAIL_ID =      'txtEmailAddress'
 #id for password <input>
-PASSWORD_ID =	'txtPassword'
+PASSWORD_ID =   'txtPassword'
 #id for login button
 LOGIN_ID =      'btnLogin'
 
 class Session:
 
-        #Maintain an instance of a browser, preserving the
-        #   page accross calls
-	global driver
+    #Maintain an instance of a browser, preserving the
+    #   page accross calls
+    global driver
 
-        #Initialize the Session and login in to the Aeries website
-        #   if successful, the browser will be on the home page
-        #   (having been redirected from the login page on submit)
-	def __init__(self, email, password):
-                self.driver = webdriver.PhantomJS()
-                self.driver.get(BASE_URL + LOGIN_PAGE)
-                email_elem = self.driver.find_element_by_id(EMAIL_ID)
-                email_elem.send_keys(email)
-                password_elem = self.driver.find_element_by_id(PASSWORD_ID)
-                password_elem.send_keys(password)
-                login_elem = self.driver.find_element_by_id(LOGIN_ID)
-                login_elem.click()
+    #Initialize the Session and login in to the Aeries website
+    #   if successful, the browser will be on the home page
+    #   (having been redirected from the login page on submit)
+    def __init__(self, email, password):
+           self.driver = webdriver.PhantomJS()
+           self.driver.get(BASE_URL + LOGIN_PAGE)
+           email_elem = self.driver.find_element_by_id(EMAIL_ID)
+           email_elem.send_keys(email)
+           password_elem = self.driver.find_element_by_id(PASSWORD_ID)
+           password_elem.send_keys(password)
+           login_elem = self.driver.find_element_by_id(LOGIN_ID)
+           login_elem.click()
 
-        #Execute Javascript on the current page
-        def executeJS(self, js):
-            self.driver.execute_script(js)
-            return self.driver.page_source
+    #Execute Javascript on the current page
+    def executeJS(self, js):
+        self.driver.execute_script(js)
+        return self.driver.page_source
 
-        #Select a value given the <select> tag's id (elem_id) and the
-        #   option value (option)
-        def select(self, elem_id, option):
-                elem = self.driver.find_element_by_id(elem_id)
-                select_elem = select.Select(elem)
-                select_elem.select_by_value(option)
+    #Select a value given the <select> tag's id (elem_id) and the
+    #   option value (option)
+    def select(self, elem_id, option):
+        elem = self.driver.find_element_by_id(elem_id)
+        select_elem = select.Select(elem)
+        select_elem.select_by_value(option)
 
-        #If the page is not already loaded, go to the page; either way,
-        #   return the page
-	def getPage(self, url):
-            if self.driver.current_url != url:
-	        self.driver.get(url)
+    #If the page is not already loaded, go to the page; either way,
+    #   return the page
+    def getPage(self, url):
+        if self.driver.current_url != url:
+            self.driver.get(url)
             return self.driver.page_source
 
         def getCurrentURL(self):

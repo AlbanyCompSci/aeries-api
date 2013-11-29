@@ -54,9 +54,9 @@ def getEntry(row):
                 #weighting category
                 'category':                 tds[3].get_text(),
                 #score recieved on assignment (my points)
-                'recieved score':           getScore(tds[4])['numerator'],
+                'recieved points':           getScore(tds[4])['numerator'],
                 #max score on assignment (out of points)
-                'max score':                getScore(tds[4])['denominator'],
+                'max points':                getScore(tds[4])['denominator'],
                 #appears to be essentially the same as score; omitting
                 #'recieved number correct': getScore(tds[5])['numerator'],
                 #'max number correct':      getScore(tds[5])['denominator'],
@@ -68,7 +68,7 @@ def getEntry(row):
                 'date completed':           getDate(tds[8].get_text()),
                 #consider combining with due time
                 'due date':                 getDate(tds[9].get_text()),
-                #'grading complete':         tds[10].get_text(),
+                'grading complete':         tds[10].get_text(),
                 'attachments':              getAttachments(tds[11])
             }
     return entry
