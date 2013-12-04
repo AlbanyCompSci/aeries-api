@@ -20,7 +20,9 @@ def getAssignments(session):
     in_month = False
     for day_tag in day_tags:
         day_of_month = getDayOfMonth(day_tag)
-        if int(day_of_month) == 1:
+        #print "day: " + str(day_of_month)
+        #weekend dates are combined into one td
+        if int(day_of_month) in [1,2]:
             in_month = not in_month
         if in_month == False:
             continue
