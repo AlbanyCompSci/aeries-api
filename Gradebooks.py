@@ -81,4 +81,4 @@ def getTrendPercents(cell):
 def getDate(cell):
     written_date = cell.find('span').get('title')
     date_object = dateutil.parser.parse(written_date)
-        return date_object.isoformat()
+    return date_object.isoformat()
