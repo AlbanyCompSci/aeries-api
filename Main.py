@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/env python2.7
 
 #system
 #JSON for language agnostic output
@@ -13,6 +13,18 @@ except ImportError:
 #Gradebooks gets gradebook information from the home page
 #Assignments gets assignment information from the home page
 import AeriesSession, Gradebooks, Assignments, GradebookDetails
+
+def get(what, email, password, gradebook=None):
+    session = AeriesSession.Session(email, password)
+    if what == 'grades':
+        data = Gradebooks.getGradebooks(session)
+    if what == 'assignments':
+        data = Assignments.getAssignments(session)
+    if what == 'gradebook':
+        #gradebook is treated as a regular expression
+        data = GradebookDetails.getGradebook(gradebook, session)
+    json = toJSON(data)
+    return json
 
 def getUserData(email, password):
     #Initializes a session object, which logs in to Aeries
@@ -29,21 +41,3 @@ def getUserData(email, password):
 
 def toJSON(python_hierachy):
     return json.dumps(python_hierachy, sort_keys=True, indent=4, separators=(',', ': '))
-
-def getLoginData(file_name):
-    with open(file_name) as f:
-        lines = f.readlines()
-        #Reads first line of file as email used for login
-        email = lines[0].rstrip('\n')
-        #Reads second line of file as password used for login
-        password = lines[1].rstrip('\n')
-    return {'email': email, 'password': password}
-
-#Get user login data from file MyLoginData in the working directory
-login_data = getLoginData('MyLoginData')
-#Gets users basic gradebooks and assignments from the home page and
-#   returns them in python format
-user_data = getUserData(login_data['email'], login_data['password'])
-#Returns user data converted into JSON
-json = toJSON(user_data)
-print json
