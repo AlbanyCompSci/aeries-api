@@ -7,17 +7,17 @@ BASE_URL = 'https://abi.ausdk12.org/aeriesportal/'
 DEFAULT_PAGE = 'default.aspx'
 GRADEBOOK_PAGE = 'GradebookDetails.aspx'
 
-def getGradebook(gradebook_name, session):
-    page = getGradebookPage(gradebook_name, session)
+def getGradebook(gradebook_name_re, session):
+    page = getGradebookPage(gradebook_name_re, session)
     soup = BeautifulSoup(page)
     entries = getEntries(soup)
     weighting = getWeighting(soup)
     return {'entries': entries, 'weighting': weighting}
 
-def getGradebookPage(gradebook_name, session):
+def getGradebookPage(gradebook_name_re, session):
     default_text = session.getPage(BASE_URL + DEFAULT_PAGE)
     default_soup = BeautifulSoup(default_text)
-    link_tag = default_soup.find('a', text=gradebook_name)
+    link_tag = default_soup.find('a', text=re.compile(gradebook_name_re))
     js_link = link_tag.get('href')
     session.executeJS(js_link)
     gradebook_page = session.getPage(BASE_URL + GRADEBOOK_PAGE)
