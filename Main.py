@@ -15,7 +15,10 @@ except ImportError:
 import AeriesSession, Gradebooks, Assignments, GradebookDetails
 
 def get(what, email, password, gradebook=None):
-    session = AeriesSession.Session(email, password)
+    try:
+        session = AeriesSession.Session(email, password)
+    except ValueError:
+        raise
     if what == 'grades':
         data = Gradebooks.getGradebooks(session)
     if what == 'assignments':
