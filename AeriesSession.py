@@ -36,7 +36,7 @@ class Session:
         #print "Email: " + str(email) + "|"
         #print "Password: " + str(password) + "|"
         login_url = BASE_URL + LOGIN_PAGE
-        self.driver = webdriver.PhantomJS()
+        self.driver = webdriver.PhantomJS(service_log_path='/dev/null')
         self.driver.get(login_url)
         email_elem = self.driver.find_element_by_id(EMAIL_ID)
         email_elem.send_keys(email)
