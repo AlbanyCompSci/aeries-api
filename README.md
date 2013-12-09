@@ -1,13 +1,7 @@
 # README
-New incarnation of an Aeries API (to go along with the districts new version of Aeries). Currently, only finds gradebook. Run by executing Main.py with email and password in file MyLoginData in the form
+New incarnation of an Aeries API (to go along with the districts new version of Aeries). Currently, only finds gradebook. Please run using aeries-cli, which can be found at DavidHarrison/aeries-cli. However, it is possible to run by adding a few lines to Main.py to call get() on execution.
 
-email\n
-password
-
-can also be generated with ./setLoginData.sh
-
-
-## Todo
+## TODO
 - **clean up code**
 - check for edge case bugs
 - decide on how to deal with blank fields (None/null type, '' string, 'blank' string etc.)
