@@ -17,11 +17,11 @@ LOGIN_PAGE =    'LoginParent.aspx'
 #<form> id, not currently used
 #FORM_ID =      'form1'
 #id for email <input>
-EMAIL_ID =      'txtEmailAddress'
+EMAIL_ID =      'portalAccountUsername'
 #id for password <input>
-PASSWORD_ID =   'txtPassword'
+PASSWORD_ID =   'portalAccountPassword'
 #id for login button
-LOGIN_ID =      'btnLogin'
+LOGIN_ID =      'LoginButton'
 
 class Session:
 
@@ -33,8 +33,8 @@ class Session:
     #   if successful, the browser will be on the home page
     #   (having been redirected from the login page on submit)
     def __init__(self, email, password):
-        #print "Email: " + str(email) + "|"
-        #print "Password: " + str(password) + "|"
+        #print "Email: " + str(email)
+        #print "Password: " + str(password)
         login_url = BASE_URL + LOGIN_PAGE
         self.driver = webdriver.PhantomJS(service_log_path='/dev/null')
         self.driver.get(login_url)
